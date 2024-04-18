@@ -6,12 +6,25 @@ There may be other (and better) ways of accomplishing this, but here's how I'm c
 
 ## Credential Management
 
-I'm using [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager) to handle storing secrets on my local machine. This works out of the box with the OSX Keychain as well as the Windows Credential Store, though [Linux requires a bit of extra configuration](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md#linux).
+I'm using [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager) to handle storing secrets on my local machine. This works out of the box with the OSX Keychain as well as the Windows Credential Store, though [Linux requires a bit of extra configuration](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md#linux). Install git-credential-manager using your system's preferred installation method, in my case, this was done with the following command:
 
-To allow GCM to store credentials on a per-repo basis, we need to enable [useHttpPath](https://git-scm.com/docs/gitcredentials#Documentation/gitcredentials.txt-useHttpPath). This is what enables us to use different identities for different organizations in GitHub. You will need to issue the following command:
+```sh
+brew install --cask git-credential-manager
+```
+
+Installing git-credential-manager should automatically populate this item in the .gitconfig file in your home directory, confirm its presence before proceeding:
+
+```sh
+# You should see this in your ~/.gitconfig file
+[credential "https://dev.azure.com"]
+        useHttpPath = true
+```
+
+Next, we'll allow GCM to store credentials on a per-repo basis, so we need to enable [useHttpPath](https://git-scm.com/docs/gitcredentials#Documentation/gitcredentials.txt-useHttpPath). This is what enables us to use different identities for different organizations in GitHub. You will need to issue the following command:
 
 ```sh
 git config --global --add credential.https://github.com.useHttpPath true
+
 ```
 
 Optionally, if you use other hostnames outside of `github.com` (perhaps you use Bitbucket or GitLab for a client), you'll want to substitute them in and run the command one time for each host you intend to use:
@@ -111,3 +124,13 @@ Finally, to make Git utilize these configuration files, we need to add some [con
 Now, any configuration item for Git can be applied to any organizational folder just by editing a single .gitconfig for that organization. This, combined with git-credential-manager prompting you to authenticate for each new repository URL you encounter, allows you the flexibility to authenticate and appear as whichever user is necessary for a given project.
 
 As you encounter new organizations, you'll need to maintain the folder structure and config files.
+
+## Troubleshooting
+
+If you're not able to get the above to work, you may need to reset git's path to the git-credential-manager tool:
+
+```sh
+git config --global --add credential.https://github.com.helper $(which git-credential-manager)
+```
+
+If you're not being prompted to authenticate with your repository upon push, or you find that git is consistently authenticating you with a user you don't expect and you're on OSX, you may need to clear the keychain entry. Open Keychain Access, select your `login` keychain, search for `github` and remove all matching entries. Confirm usehttppath is set for the host you're expecting in your .gitconfig and try again.
