@@ -134,3 +134,5 @@ git config --global --add credential.https://github.com.helper $(which git-crede
 ```
 
 If you're not being prompted to authenticate with your repository upon push, or you find that git is consistently authenticating you with a user you don't expect and you're on OSX, you may need to clear the keychain entry. Open Keychain Access, select your `login` keychain, search for `github` and remove all matching entries. Confirm usehttppath is set for the host you're expecting in your .gitconfig and try again.
+
+If you're not seeing any records created in your Keychain and the GCM tool doesn't appear to work, double-check to make sure you haven't provided credentials through your .netrc file!
