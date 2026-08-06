@@ -1,3 +1,8 @@
+![Deprecated](https://img.shields.io/badge/Deprecated-FF0000)
+
+> [!CAUTION]
+> This documentation has been added to the `platform-onboarding` documentation for Launch's Platform Engineering practice. This repo is no longer maintained, if you followed a link here from old documentation, ensure that it's updated accordingly.
+
 # Git Setup for Multiple Orgs/Identities
 
 First, this document doesn't cover using SSH keys for different organizations. This document pertains to Git over HTTPS only.
